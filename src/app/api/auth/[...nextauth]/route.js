@@ -2,8 +2,9 @@ import NextAuth from "next-auth";
 import CredentialsProviders from "next-auth/providers/credentials";
 import db from "@/libs/db";
 import bcrypt from 'bcrypt'
+import { signIn } from "next-auth/react";
 
-const authOptions = {
+export const authOptions = {
   providers: [
     CredentialsProviders({
       name: "Credentials",
@@ -38,6 +39,10 @@ const authOptions = {
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: "/auth/login",
+  }
 };
 
 const handler = NextAuth(authOptions);
