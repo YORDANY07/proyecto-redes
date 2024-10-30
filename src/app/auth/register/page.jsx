@@ -1,6 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import styles from "../styles/register.module.css";
 
 function RegisterPage() {
   const {
@@ -16,7 +17,6 @@ function RegisterPage() {
     }
 
     const res = await fetch("/api/auth/register", {
-        
       method: "POST",
       body: JSON.stringify({
         D_userName: data.username,
@@ -35,11 +35,11 @@ function RegisterPage() {
   console.log(errors);
 
   return (
-    <div className="h-[calc(100vh-7rem)] flex justify-center items-center">
-      <form onSubmit={onSubmit} className="w-1/4">
-        <h1 className="text-slate-200 font-bold text-4xl mb-4">Register</h1>
+    <div className={styles.container}>
+      <form onSubmit={onSubmit} className={styles.form}>
+        <h1 className={styles.title}>Register</h1>
 
-        <label htmlFor="username" className="text-slate-500 mb-2 block text-sm">
+        <label htmlFor="username" className={styles.label}>
           Username:
         </label>
         <input
@@ -50,19 +50,14 @@ function RegisterPage() {
               message: "Username is required",
             },
           })}
-          className="p-3 rounded block mb-2 bg-slate-900 text-slate-300 w-full"
+          className={styles.input}
           placeholder="yourUser123"
         />
-
         {errors.username && (
-          <span className="text-red-500 text-xs">
-            {errors.username.message}
-          </span>
+          <span className={styles.errorText}>{errors.username.message}</span>
         )}
 
-       
-
-        <label htmlFor="password" className="text-slate-500 mb-2 block text-sm">
+        <label htmlFor="password" className={styles.label}>
           Password:
         </label>
         <input
@@ -73,19 +68,14 @@ function RegisterPage() {
               message: "Password is required",
             },
           })}
-          className="p-3 rounded block mb-2 bg-slate-900 text-slate-300 w-full"
+          className={styles.input}
           placeholder="********"
         />
         {errors.password && (
-          <span className="text-red-500 text-sm">
-            {errors.password.message}
-          </span>
+          <span className={styles.errorText}>{errors.password.message}</span>
         )}
 
-        <label
-          htmlFor="confirmPassword"
-          className="text-slate-500 mb-2 block text-sm"
-        >
+        <label htmlFor="confirmPassword" className={styles.label}>
           Confirm Password:
         </label>
         <input
@@ -96,20 +86,19 @@ function RegisterPage() {
               message: "Confirm Password is required",
             },
           })}
-          className="p-3 rounded block mb-2 bg-slate-900 text-slate-300 w-full"
+          className={styles.input}
           placeholder="********"
         />
         {errors.confirmPassword && (
-          <span className="text-red-500 text-sm">
+          <span className={styles.errorText}>
             {errors.confirmPassword.message}
           </span>
         )}
 
-        <button className="w-full bg-blue-500 text-white p-3 rounded-lg mt-2">
-          Register
-        </button>
+        <button className={styles.button}>Register</button>
       </form>
     </div>
   );
 }
+
 export default RegisterPage;

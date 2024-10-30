@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import styles from "../styles/dashboard.module.css";
 
 function DashboardPage() {
   const [data, setData] = useState([]);
@@ -20,6 +21,7 @@ function DashboardPage() {
 
     fetchData();
   }, []);
+
   const deleteUser = async (id) => {
     try {
       const res = await fetch("/api/users", {
@@ -39,50 +41,42 @@ function DashboardPage() {
       console.error("Error al eliminar el usuario:", error);
     }
   };
-  return (
-    <div>
-      <h1>Usuarios</h1>
 
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
-        <thead>
-          <tr>
-            <th style={headerStyle}>ID</th>
-            <th style={headerStyle}>Nombre de Usuario</th>
-            <th style={headerStyle}>Contraseña</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((user) => (
-            <tr key={user.C_idUser} style={rowStyle}>
-              <td style={cellStyle}>{user.C_idUser}</td>
-              <td style={cellStyle}>{user.D_userName}</td>
-              <td style={cellStyle}>{user.D_contrase_a}</td>
-              <td style={cellStyle}>
-                <button onClick={() => deleteUser(user.C_idUser)}>
-                  Eliminar
-                </button>
-              </td>
+  return (
+    <div className={styles.container}>
+      <h1 className={styles.title}>Usuarios</h1>
+
+      <div className={styles.tableWrapper}>
+        <table className={styles.table}>
+          <thead>
+            <tr className={styles.header}>
+              <th className={styles.colum}>ID</th>
+              <th className={styles.colum}>Nombre de Usuario</th>
+              <th className={styles.colum}>Contraseña</th>
+              <th className={styles.colum}>Acciones</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data.map((user) => (
+              <tr key={user.C_idUser} className={styles.row}>
+                <td className={styles.cell}>{user.C_idUser}</td>
+                <td className={styles.cell}>{user.D_userName}</td>
+                <td className={styles.cell}>{user.D_contrase_a}</td>
+                <td className={styles.cell}>
+                  <button
+                    onClick={() => deleteUser(user.C_idUser)}
+                    className={styles.deleteButton}
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
-
-const headerStyle = {
-  borderBottom: "2px solid #333",
-  padding: "8px",
-  textAlign: "left",
-  backgroundColor: "#000000",
-};
-
-const rowStyle = {
-  borderBottom: "1px solid #ddd",
-};
-
-const cellStyle = {
-  padding: "8px",
-};
 
 export default DashboardPage;

@@ -1,8 +1,9 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
-import {useRouter} from 'next/navigation'
-import {useState} from 'react'
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import styles from "../styles/login.module.css";
 
 function LoginPage() {
   const {
@@ -10,38 +11,32 @@ function LoginPage() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const router = useRouter()
-  const [error, setError] = useState(null)
-  
-  const onSubmit = handleSubmit(async (data) => {
- 
+  const router = useRouter();
+  const [error, setError] = useState(null);
 
+  const onSubmit = handleSubmit(async (data) => {
     const res = await signIn("credentials", {
-        D_username: data.username,
+      D_username: data.username,
       password: data.password,
       redirect: false,
     });
 
-
     if (res.error) {
-      setError(res.error)
+      setError(res.error);
     } else {
-      router.push('/dashboard')
-      router.refresh()
+      router.push('/dashboard');
+      router.refresh();
     }
   });
 
   return (
-    <div className="h-[calc(100vh-7rem)] flex justify-center items-center">
-      <form onSubmit={onSubmit} className="w-1/4">
-
+    <div className={styles.container}>
+      <form onSubmit={onSubmit} className={styles.form}>
         {error && (
-          <p className="bg-red-500 text-lg text-white p-3 rounded mb-2">{error}</p>
+          <p className={styles.error}>{error}</p>
         )}
-
-        <h1 className="text-slate-200 font-bold text-4xl mb-4">Login</h1>
-
-        <label htmlFor="email" className="text-slate-500 mb-2 block text-sm">
+        <h1 className={styles.title}>Login</h1>
+        <label htmlFor="email" className={styles.label}>
           username:
         </label>
         <input
@@ -52,15 +47,13 @@ function LoginPage() {
               message: "Email is required",
             },
           })}
-          className="p-3 rounded block mb-2 bg-slate-900 text-slate-300 w-full"
+          className={styles.input}
           placeholder="user@email.com"
         />
-
         {errors.username && (
-          <span className="text-red-500 text-xs">{errors.username.message}</span>
+          <span className={styles.errorText}>{errors.username.message}</span>
         )}
-
-        <label htmlFor="password" className="text-slate-500 mb-2 block text-sm">
+        <label htmlFor="password" className={styles.label}>
           Password:
         </label>
         <input
@@ -71,21 +64,20 @@ function LoginPage() {
               message: "Password is required",
             },
           })}
-          className="p-3 rounded block mb-2 bg-slate-900 text-slate-300 w-full"
+          className={styles.input}
           placeholder="******"
         />
-
         {errors.password && (
-          <span className="text-red-500 text-xs">
+          <span className={styles.errorText}>
             {errors.password.message}
           </span>
         )}
-
-        <button className="w-full bg-blue-500 text-white p-3 rounded-lg mt-2">
+        <button className={styles.button}>
           Login
         </button>
       </form>
     </div>
   );
 }
+
 export default LoginPage;
