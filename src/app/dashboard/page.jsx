@@ -67,7 +67,7 @@ function DashboardPage() {
                     onClick={() => deleteUser(user.C_idUser)}
                     className={styles.deleteButton}
                   >
-                    Eliminar
+                    Eliminar usuario
                   </button>
                 </td>
               </tr>
